@@ -32,7 +32,8 @@ else:
 
 
 if total > 50:
-    total *= 0.9
+    tmp_above_limit = total - 50
+    total = total - tmp_above_limit + tmp_above_limit * 0.9
 
 
 print("Total: " + total * 1.24)

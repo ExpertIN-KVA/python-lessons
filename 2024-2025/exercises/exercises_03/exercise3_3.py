@@ -13,5 +13,8 @@ print(total)
 total = 0
 i = 10
 while i < 100:
-    print(i)
+    total += i
     i += 2
+
+
+print(total)

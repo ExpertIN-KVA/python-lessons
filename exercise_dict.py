@@ -23,92 +23,96 @@
 # 1. <τυπος οχηματος> - <μηκος οχηματος> - <κοστος οχηματος> - <θεση οδηγου> - <κοστος θεσης οδηγου> - <συνολο> - <εκπτωση> - <φπα> - <συνολο μετα την εκπτωση και τον φπα>
 
 
-data = []
-while True:
-    data.append({})
-    last_index = len(data) - 1
-
-    data[last_index]["vehicle_length"] = float(input("Δώσε το μήκος του οχήματος: "))
+def main():
+    data = []
     while True:
-        data[last_index]["vehicle_type"] = input(
-            "Δώσε τύπο οχήματος (Λεωφορείο/Φορτηγό): "
+        data.append({})
+        last_index = len(data) - 1
+
+        data[last_index]["vehicle_length"] = float(
+            input("Δώσε το μήκος του οχήματος: ")
         )
-        if (
-            data[last_index]["vehicle_type"] == "Φορτηγό"
-            or data[last_index]["vehicle_type"] == "Λεωφορείο"
-        ):
-            break
 
-    while True:
-        data[last_index]["driver_seat"] = input(
-            "Δώσε θέση οδηγού (Σαλόνι/Κατάστρωμα): "
+        data[last_index]["vehicle_type"] = validationCheck(
+            "Δώσε τύπο οχήματος (Λεωφορείο/Φορτηγό): ", ["Φορτηγό", "Λεωφορείο"]
         )
-        if (
-            data[last_index]["driver_seat"] == "Σαλόνι"
-            or data[last_index]["driver_seat"] == "Κατάστρωμα"
-        ):
-            break
 
-    data[last_index]["vehicle_length"] = round(data[last_index]["vehicle_length"], 0)
+        data[last_index]["driver_seat"] = validationCheck(
+            "Δώσε θέση οδηγού (Σαλόνι/Κατάστρωμα): ", ["Σαλόνι", "Κατάστρωμα"]
+        )
 
-    if data[last_index]["vehicle_type"] == "Φορτηγό":
-        data[last_index]["cost_for_vehicle"] = data[last_index]["vehicle_length"] * 5
-    else:
-        data[last_index]["cost_for_vehicle"] = data[last_index]["vehicle_length"] * 4
+        data[last_index]["vehicle_length"] = round(
+            data[last_index]["vehicle_length"], 0
+        )
 
-    data[last_index]["total"] = data[last_index]["cost_for_vehicle"]
+        if data[last_index]["vehicle_type"] == "Φορτηγό":
+            data[last_index]["cost_for_vehicle"] = (
+                data[last_index]["vehicle_length"] * 5
+            )
+        else:
+            data[last_index]["cost_for_vehicle"] = (
+                data[last_index]["vehicle_length"] * 4
+            )
 
-    if data[last_index]["driver_seat"] == "Σαλόνι":
-        data[last_index]["cost_for_seat"] = 15
-    else:
-        data[last_index]["cost_for_seat"] = 10
+        data[last_index]["total"] = data[last_index]["cost_for_vehicle"]
 
-    data[last_index]["total"] = (
-        data[last_index]["total"] + data[last_index]["cost_for_seat"]
-    )
+        if data[last_index]["driver_seat"] == "Σαλόνι":
+            data[last_index]["cost_for_seat"] = 15
+        else:
+            data[last_index]["cost_for_seat"] = 10
 
-    data[last_index]["total_discount_fpa"] = data[last_index]["total"]
-    if data[last_index]["total"] > 50:
-        data[last_index]["discount"] = (data[last_index]["total"] - 50) * 0.1
+        data[last_index]["total"] = (
+            data[last_index]["total"] + data[last_index]["cost_for_seat"]
+        )
+
+        data[last_index]["total_discount_fpa"] = data[last_index]["total"]
+        if data[last_index]["total"] > 50:
+            data[last_index]["discount"] = (data[last_index]["total"] - 50) * 0.1
+            data[last_index]["total_discount_fpa"] = (
+                data[last_index]["total"] - data[last_index]["discount"]
+            )
+
+        data[last_index]["fpa"] = data[last_index]["total_discount_fpa"] * 0.24
         data[last_index]["total_discount_fpa"] = (
-            data[last_index]["total"] - data[last_index]["discount"]
+            data[last_index]["total_discount_fpa"] + data[last_index]["fpa"]
         )
 
-    data[last_index]["fpa"] = data[last_index]["total_discount_fpa"] * 0.24
-    data[last_index]["total_discount_fpa"] = (
-        data[last_index]["total_discount_fpa"] + data[last_index]["fpa"]
-    )
+        continue_answer = validationCheck("Continue? (Yes/No): ", ["Yes", "No"])
 
-    continue_answer = ""
-    while True:
-        continue_answer = input("Continue? (Yes/No): ")
-        if continue_answer == "Yes" or continue_answer == "No":
+        if continue_answer == "No":
             break
 
-    if continue_answer == "No":
-        break
+    print("\nTotal tickets cutted")
+    for i in range(0, len(data)):
+        print(
+            str(i + 1)
+            + ". "
+            + data[i]["vehicle_type"]
+            + " - "
+            + str(data[i]["vehicle_length"])
+            + " - "
+            + str(data[i]["cost_for_vehicle"])
+            + " - "
+            + data[i]["driver_seat"]
+            + " - "
+            + str(data[i]["cost_for_seat"])
+            + " - "
+            + str(data[i]["total"])
+            + " - "
+            + str(data[i]["discount"])
+            + " - "
+            + str(data[i]["fpa"])
+            + " - "
+            + str(data[i]["total_discount_fpa"])
+        )
 
 
-print("\nTotal tickets cutted")
-for i in range(0, len(data)):
-    print(
-        str(i + 1)
-        + ". "
-        + data[i]["vehicle_type"]
-        + " - "
-        + str(data[i]["vehicle_length"])
-        + " - "
-        + str(data[i]["cost_for_vehicle"])
-        + " - "
-        + data[i]["driver_seat"]
-        + " - "
-        + str(data[i]["cost_for_seat"])
-        + " - "
-        + str(data[i]["total"])
-        + " - "
-        + str(data[i]["discount"])
-        + " - "
-        + str(data[i]["fpa"])
-        + " - "
-        + str(data[i]["total_discount_fpa"])
-    )
+def validationCheck(input_text, collection):
+    while True:
+        input_value = input(input_text)
+        for entity in collection:
+            if input_value == entity:
+                return input_value
+
+
+main()

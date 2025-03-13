@@ -10,7 +10,7 @@ while True:
         break
 
     num_list.append(num)
-    
+
 
 for number in num_list:
     sum = sum + number
